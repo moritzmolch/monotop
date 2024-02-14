@@ -215,7 +215,7 @@ dyjets_ll:
   das:
     key: /DYJetsToLL_LHEFilterPtZ-50To100_MatchEWPDG20_TuneCP5_13TeV-amcatnloFXFX-pythia8/mwassmer-KITv2_CustomNanoV9_MC_2018-8df5cb2b7a76547c21991083f468dfa2/USER
     instance: prod/phys03
-  cross_section: cross_section: 395.1
+  cross_section: 395.1
 
 - name: dyjets_ll_ptZ100To250_amcatnlo
   das:
@@ -237,7 +237,7 @@ dyjets_ll:
 
 - name: dyjets_ll_ptZ650ToInf_amcatnlo
   das:
-    - /DYJetsToLL_LHEFilterPtZ-650ToInf_MatchEWPDG20_TuneCP5_13TeV-amcatnloFXFX-pythia8/mwassmer-KITv2_CustomNanoV9_MC_2018-8df5cb2b7a76547c21991083f468dfa2/USER
+    key: /DYJetsToLL_LHEFilterPtZ-650ToInf_MatchEWPDG20_TuneCP5_13TeV-amcatnloFXFX-pythia8/mwassmer-KITv2_CustomNanoV9_MC_2018-8df5cb2b7a76547c21991083f468dfa2/USER
     instance: prod/phys03
   cross_section: 462.0
 

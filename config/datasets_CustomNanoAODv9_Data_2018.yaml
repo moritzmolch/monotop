@@ -3,6 +3,7 @@
 #
 
 egamma:
+
 - name: egamma_2018A
   das:
     key: /EGamma/swieland-KITv3_CustomNanoV9_Data_2018A-8572fdae940d4a6b8cd6e01ebd9b6132/USER
@@ -31,6 +32,8 @@ egamma:
 # MET data
 #
 
+met:
+
 - name: met_2018A
   das:
     key: /MET/swieland-KITv3_CustomNanoV9_Data_2018A-8572fdae940d4a6b8cd6e01ebd9b6132/USER
@@ -58,6 +61,8 @@ egamma:
 #
 # JetHT data
 #
+
+jetht:
 
 - name: jetht_2018A
   das:
