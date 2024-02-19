@@ -1,89 +1,4 @@
 #
-# EGamma data
-#
-
-egamma:
-- name: egamma_2018A
-  das:
-    key: /EGamma/swieland-KITv3_CustomNanoV9_Data_2018A-8572fdae940d4a6b8cd6e01ebd9b6132/USER
-    instance: prod/phys03
-  is_data: True
-
-- name: egamma_2018B
-  das:
-    key: /EGamma/swieland-KITv3_CustomNanoV9_Data_2018B-8572fdae940d4a6b8cd6e01ebd9b6132/USER
-    instance: prod/phys03
-  is_data: True
-
-- name: egamma_2018C
-  das:
-    key: /EGamma/swieland-KITv3_CustomNanoV9_Data_2018C-8572fdae940d4a6b8cd6e01ebd9b6132/USER
-    instance: prod/phys03
-  is_data: True
-
-- name: egamma_2018D
-  das:
-    key: /EGamma/swieland-KITv3_CustomNanoV9_Data_2018D-8572fdae940d4a6b8cd6e01ebd9b6132/USER
-    instance: prod/phys03
-  is_data: True
-
-#
-# MET data
-#
-
-- name: met_2018A
-  das:
-    key: /MET/swieland-KITv3_CustomNanoV9_Data_2018A-8572fdae940d4a6b8cd6e01ebd9b6132/USER
-    instance: prod/phys03
-  is_data: True
-
-- name: met_2018B
-  das:
-    key: /MET/swieland-KITv3_CustomNanoV9_Data_2018B-8572fdae940d4a6b8cd6e01ebd9b6132/USER
-    instance: prod/phys03
-  is_data: True
-
-- name: met_2018C
-  das:
-    key: /MET/swieland-KITv3_CustomNanoV9_Data_2018C-8572fdae940d4a6b8cd6e01ebd9b6132/USER
-    instance: prod/phys03
-  is_data: True
-
-- name: met_2018D
-  das:
-    key: /MET/swieland-KITv3_CustomNanoV9_Data_2018D-8572fdae940d4a6b8cd6e01ebd9b6132/USER
-    instance: prod/phys03
-  is_data: True
-
-#
-# JetHT data
-#
-
-- name: jetht_2018A
-  das:
-    key: /JetHT/swieland-KITv3_CustomNanoV9_Data_2018A-8572fdae940d4a6b8cd6e01ebd9b6132/USER
-    instance: prod/phys03
-  is_data: True
-
-- name: jetht_2018B
-  das:
-    key: /JetHT/swieland-KITv3_CustomNanoV9_Data_2018B-8572fdae940d4a6b8cd6e01ebd9b6132/USER
-    instance: prod/phys03
-  is_data: True
-
-- name: jetht_2018C
-  das:
-    key: /JetHT/swieland-KITv3_CustomNanoV9_Data_2018C-8572fdae940d4a6b8cd6e01ebd9b6132/USER
-    instance: prod/phys03
-  is_data: True
-
-- name: jetht_2018D
-  das:
-    key: /JetHT/swieland-KITv3_CustomNanoV9_Data_2018D-8572fdae940d4a6b8cd6e01ebd9b6132/USER
-    instance: prod/phys03
-  is_data: True
-
-#
 # ttbar production
 #
 
@@ -159,7 +74,7 @@ wjets_lnu:
 
 - name: wjets_lnu_0jets_amcatnlo
   das:
-    key: WJetsToLNu_0J_TuneCP5_13TeV-amcatnloFXFX-pythia8/mwassmer-KITv2_CustomNanoV9_MC_2018-8df5cb2b7a76547c21991083f468dfa2/USER
+    key: /WJetsToLNu_0J_TuneCP5_13TeV-amcatnloFXFX-pythia8/mwassmer-KITv2_CustomNanoV9_MC_2018-8df5cb2b7a76547c21991083f468dfa2/USER
     instance: prod/phys03
   cross_section: 53300.0
 
@@ -356,90 +271,90 @@ qcd:
 
 - name: qcd_pt15to30_pythia
   das:
-    key: QCD_Pt_15to30_TuneCP5_13TeV_pythia8/mwassmer-KITv2_CustomNanoV9_MC_2018-8df5cb2b7a76547c21991083f468dfa2/USER
+    key: /QCD_Pt_15to30_TuneCP5_13TeV_pythia8/mwassmer-KITv2_CustomNanoV9_MC_2018-8df5cb2b7a76547c21991083f468dfa2/USER
     instance: prod/phys03
   cross_section: 1246000000.0
 
 - name: qcd_pt30to50_pythia
   das:
-    key: QCD_Pt_30to50_TuneCP5_13TeV_pythia8/mwassmer-KITv2_CustomNanoV9_MC_2018-8df5cb2b7a76547c21991083f468dfa2/USER
+    key: /QCD_Pt_30to50_TuneCP5_13TeV_pythia8/mwassmer-KITv2_CustomNanoV9_MC_2018-8df5cb2b7a76547c21991083f468dfa2/USER
     instance: prod/phys03
   cross_section: 106800000.0
 
 - name: qcd_pt50to80_pythia
   das:
-    key: QCD_Pt_50to80_TuneCP5_13TeV_pythia8/mwassmer-KITv2_CustomNanoV9_MC_2018-8df5cb2b7a76547c21991083f468dfa2/USER
+    key: /QCD_Pt_50to80_TuneCP5_13TeV_pythia8/mwassmer-KITv2_CustomNanoV9_MC_2018-8df5cb2b7a76547c21991083f468dfa2/USER
     instance: prod/phys03
   cross_section: 15690000.0
 
 - name: qcd_pt80to120_pythia
   das:
-    key: QCD_Pt_80to120_TuneCP5_13TeV_pythia8/mwassmer-KITv2_CustomNanoV9_MC_2018-8df5cb2b7a76547c21991083f468dfa2/USER
+    key: /QCD_Pt_80to120_TuneCP5_13TeV_pythia8/mwassmer-KITv2_CustomNanoV9_MC_2018-8df5cb2b7a76547c21991083f468dfa2/USER
     instance: prod/phys03
   cross_section: 2341000.0
 
 - name: qcd_pt120to170_pythia
   das:
-    key: QCD_Pt_120to170_TuneCP5_13TeV_pythia8/mwassmer-KITv2_CustomNanoV9_MC_2018-8df5cb2b7a76547c21991083f468dfa2/USER
+    key: /QCD_Pt_120to170_TuneCP5_13TeV_pythia8/mwassmer-KITv2_CustomNanoV9_MC_2018-8df5cb2b7a76547c21991083f468dfa2/USER
     instance: prod/phys03
   cross_section: 407500.0
 
 - name: qcd_pt170to300_pythia
   das:
-    key: QCD_Pt_170to300_TuneCP5_13TeV_pythia8/mwassmer-KITv2_CustomNanoV9_MC_2018-8df5cb2b7a76547c21991083f468dfa2/USER
+    key: /QCD_Pt_170to300_TuneCP5_13TeV_pythia8/mwassmer-KITv2_CustomNanoV9_MC_2018-8df5cb2b7a76547c21991083f468dfa2/USER
     instance: prod/phys03
   cross_section: 103600.0
 
 - name: qcd_pt300to470_pythia
   das:
-    key: QCD_Pt_300to470_TuneCP5_13TeV_pythia8/mwassmer-KITv2_CustomNanoV9_MC_2018-8df5cb2b7a76547c21991083f468dfa2/USER
+    key: /QCD_Pt_300to470_TuneCP5_13TeV_pythia8/mwassmer-KITv2_CustomNanoV9_MC_2018-8df5cb2b7a76547c21991083f468dfa2/USER
     instance: prod/phys03
   cross_section: 6831.0
 
 - name: qcd_pt470to600_pythia
   das:
-    key: QCD_Pt_470to600_TuneCP5_13TeV_pythia8/mwassmer-KITv2_CustomNanoV9_MC_2018-8df5cb2b7a76547c21991083f468dfa2/USER
+    key: /QCD_Pt_470to600_TuneCP5_13TeV_pythia8/mwassmer-KITv2_CustomNanoV9_MC_2018-8df5cb2b7a76547c21991083f468dfa2/USER
     instance: prod/phys03
   cross_section: 551.3
 
 - name: qcd_pt600to800_pythia
   das:
-    key: QCD_Pt_600to800_TuneCP5_13TeV_pythia8/mwassmer-KITv2_CustomNanoV9_MC_2018-8df5cb2b7a76547c21991083f468dfa2/USER
+    key: /QCD_Pt_600to800_TuneCP5_13TeV_pythia8/mwassmer-KITv2_CustomNanoV9_MC_2018-8df5cb2b7a76547c21991083f468dfa2/USER
     instance: prod/phys03
   cross_section: 156.5
 
 - name: qcd_pt800to1000_pythia
   das:
-    key: QCD_Pt_800to1000_TuneCP5_13TeV_pythia8/mwassmer-KITv2_CustomNanoV9_MC_2018-8df5cb2b7a76547c21991083f468dfa2/USER
+    key: /QCD_Pt_800to1000_TuneCP5_13TeV_pythia8/mwassmer-KITv2_CustomNanoV9_MC_2018-8df5cb2b7a76547c21991083f468dfa2/USER
     instance: prod/phys03
   cross_section: 26.15
 
 - name: qcd_pt1000to1400_pythia
   das:
-    key: QCD_Pt_1000to1400_TuneCP5_13TeV_pythia8/mwassmer-KITv2_CustomNanoV9_MC_2018-8df5cb2b7a76547c21991083f468dfa2/USER
+    key: /QCD_Pt_1000to1400_TuneCP5_13TeV_pythia8/mwassmer-KITv2_CustomNanoV9_MC_2018-8df5cb2b7a76547c21991083f468dfa2/USER
     instance: prod/phys03
   cross_section: 7.482
 
 - name: qcd_pt1400to1800_pythia
   das:
-    key: QCD_Pt_1400to1800_TuneCP5_13TeV_pythia8/mwassmer-KITv2_CustomNanoV9_MC_2018-8df5cb2b7a76547c21991083f468dfa2/USER
+    key: /QCD_Pt_1400to1800_TuneCP5_13TeV_pythia8/mwassmer-KITv2_CustomNanoV9_MC_2018-8df5cb2b7a76547c21991083f468dfa2/USER
     instance: prod/phys03
   cross_section: 0.1259
 
 - name: qcd_pt1800to2400_pythia
   das:
-    key: QCD_Pt_1800to2400_TuneCP5_13TeV_pythia8/mwassmer-KITv2_CustomNanoV9_MC_2018-8df5cb2b7a76547c21991083f468dfa2/USER
+    key: /QCD_Pt_1800to2400_TuneCP5_13TeV_pythia8/mwassmer-KITv2_CustomNanoV9_MC_2018-8df5cb2b7a76547c21991083f468dfa2/USER
     instance: prod/phys03
   cross_section: 0.08748
 
 - name: qcd_pt2400to3200_pythia
   das:
-    key: QCD_Pt_2400to3200_TuneCP5_13TeV_pythia8/mwassmer-KITv2_CustomNanoV9_MC_2018-8df5cb2b7a76547c21991083f468dfa2/USER
+    key: /QCD_Pt_2400to3200_TuneCP5_13TeV_pythia8/mwassmer-KITv2_CustomNanoV9_MC_2018-8df5cb2b7a76547c21991083f468dfa2/USER
     instance: prod/phys03
   cross_section: 0.005236
 
 - name: qcd_pt3200toInf_pythia
   das:
-    key: QCD_Pt_3200toInf_TuneCP5_13TeV_pythia8/mwassmer-KITv2_CustomNanoV9_MC_2018-8df5cb2b7a76547c21991083f468dfa2/USER
+    key: /QCD_Pt_3200toInf_TuneCP5_13TeV_pythia8/mwassmer-KITv2_CustomNanoV9_MC_2018-8df5cb2b7a76547c21991083f468dfa2/USER
     instance: prod/phys03
   cross_section: 0.0001351
