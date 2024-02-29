@@ -13,9 +13,8 @@ import subprocess
 from monotop.constants import STORE_PATH
 
 
-#ROOT.gROOT.SetBatch(ROOT.kTRUE)
-
-TEST_FILE = "/nfs/dust/cms/user/mwassmer/MonoTop/NanoAOD/Fit/monotop-datacards-v2/combined_cards/v29_hadronic/all_years/Mphi_1000_Mchi_150/fits/fitDiagnosticsdatacard_hadronic_all_years_Mphi_1000_Mchi_150_bkg_asimov_toy_postfituncs.root"
+# the default combine input file
+DEFAULT_COMBINE_FILE = "/nfs/dust/cms/user/mwassmer/MonoTop/NanoAOD/Fit/monotop-datacards-v2/combined_cards/v29_hadronic/all_years/Mphi_1000_Mchi_150/fits/fitDiagnosticsdatacard_hadronic_all_years_Mphi_1000_Mchi_150_bkg_asimov_toy_postfituncs.root"
 
 # the pattern of the keys for accessing individual bins
 BIN_KEY_PATTERN = re.compile(r"^YEAR_(\d+((preVFP)|(postVFP))?)_((PASS)|(FAIL))_(\w)_((dycr_)|(wcr_)|(ttcr_))?(.+)_((pass)|(fail))_bin_(\d+)$")
@@ -162,8 +161,31 @@ def construct_yield_table(yields, era, top_tagger_pass_or_fail, category_labels,
 
 if __name__ == "__main__":
 
+
+    # create the argument parser
+    parser = argparse.ArgumentParser(description="Creating post-fit yield tables for the CMS Monotop analysis")
+    parser.add_argument(
+        "--combine-file",
+        help="path to the file that contains the results of the combine fit",
+        required=True,
+    )
+    parser.add_argument(
+        "--output-path",
+        help="path to the output directory; default: {}".format(os.path.join(STORE_PATH, "yields")),
+        default=os.path.join(STORE_PATH, "yields"),
+    )
+    arguments = parser.parse_args()
+
+    # parse the input file
+    combine_file_path = os.path.abspath(arguments.combine_file)
+
+    output_dir = destination = os.path.join(STORE_PATH, "yields", os.path.splitext(os.path.basename(combine_file_path))[0])
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
+
     try:
-        root_file = ROOT.TFile.Open(TEST_FILE, "READ")
+        # load the ROOT file
+        root_file = ROOT.TFile.Open(combine_file_path, "READ")
 
         # get the postfit yields and covariances from the ROOT file
         yields_combine = root_file.Get("shapes_fit_b")
@@ -183,10 +205,7 @@ if __name__ == "__main__":
             yields = fill_category_values(yields, category_key, bin_group_names, yields_combine, total_cov_combine)
 
         # dump the results into a JSON file
-        destination = os.path.join(STORE_PATH, "yields", "yield_table_results.h5")
-        destination_parent = os.path.dirname(destination)
-        if not os.path.exists(destination_parent):
-            os.makedirs(destination_parent)
+        destination = os.path.join(output_dir, "yield_table_results.h5")
         yields.to_hdf(destination, key="yields")
 
         # construct the yield tables and dump them into LaTeX files
@@ -214,15 +233,12 @@ if __name__ == "__main__":
                     r"",
                     r"\end{document}"
                 ])
-                destination = os.path.join(STORE_PATH, "yields", "yield_table_{}_{}.tex".format(era, top_tagger_pass_or_fail))
-                destination_parent = os.path.dirname(destination)
-                if not os.path.exists(destination_parent):
-                    os.makedirs(destination_parent)
+                destination = os.path.join(output_dir, "yield_table_{}_{}.tex".format(era, top_tagger_pass_or_fail))
                 with open(destination, mode="w") as f:
                     f.write(prefix + yield_table + suffix)
 
                 # compile the PDF
-                p = subprocess.Popen(["/usr/bin/pdflatex", os.path.basename(destination)], cwd=destination_parent, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
+                p = subprocess.Popen(["/usr/bin/pdflatex", os.path.basename(destination)], cwd=output_dir, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
                 out, err = p.communicate()
 
                 if p.returncode != 0:
