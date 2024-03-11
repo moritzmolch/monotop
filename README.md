@@ -2,7 +2,7 @@
 
 Loose collection of scripts for the CMS Monotop analysis
 
-# Software stack
+## Software stack
 
 Before executing any code in this repository, set up the software stack with the following command:
 
