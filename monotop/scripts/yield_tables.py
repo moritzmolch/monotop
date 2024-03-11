@@ -33,7 +33,7 @@ CATEGORY_LABELS = OrderedDict([
 
 # process names (in keys) and labels (in the final table)
 PROCESS_LABELS = OrderedDict([
-    #("data", "data"),
+    ("data", "data"),
     ("total", "total background"),
     ("DYJetsToLL", "Z($\\ell\\ell$)+jets"),
     ("ZJetsToNuNu", "Z($\\nu\\nu$)+jets"),
@@ -78,10 +78,10 @@ def create_yield_data_frame(bin_groups, yields_combine):
         for bin_name in bin_names:
             for key in yields_combine.Get(bin_name).GetListOfKeys():
                 process = key.GetName()
-                if process in ["total_background", "total_signal", "total_covar", "data", "Mphi_1000_Mchi_150"]:
+                if process in ["total_background", "total_signal", "total_covar", "Mphi_1000_Mchi_150"]:
                     continue
                 processes.add(process)
-    index = pd.MultiIndex.from_product([processes, ["yield", "variance", "string"]], names=["process", "yield_variance"])
+    index = pd.MultiIndex.from_product([processes, ["yield", "variance_down", "variance_up", "string"]], names=["process", "yield_variance"])
 
     # construct and return the data frame
     return pd.DataFrame(np.zeros((len(index), len(columns)), dtype=np.float64), index=index, columns=columns)
@@ -113,26 +113,48 @@ def fill_category_values(yields, category_key, bin_group_names, yields_combine, 
             process = key.GetName()
 
             # ignore entries that we are not interested in
-            if process in ["total_background", "total_signal", "total_covar", "data", "Mphi_1000_Mchi_150"]:
+            if process in ["total_background", "total_signal", "total_covar", "Mphi_1000_Mchi_150"]:
                 continue
 
-            # add yield of this process in this bin to the data frame
-            yields.loc[(process, "yield"), category_key] += yields_combine_bin.Get(process).GetBinContent(1)
+            elif process == "data":
+                if category_key[1] == "pass" and category_key[2] == "SR":
+                    # do not write out anything in the signal region
+                    yields.loc[(process, "yield"), category_key] = -1
+                    yields.loc[(process, "variance_down"), category_key] += 10000
+                    yields.loc[(process, "variance_up"), category_key] += 10000
 
-            # if this is not the total yield, the variances are added up
-            if process != "total":
-                yields.loc[(process, "variance"), category_key] += np.power(yields_combine_bin.Get(process).GetBinError(1), 2)
-                yields.loc[(process, "string"), category_key] = "${} \\pm {}$".format(
-                   np.array(np.round(yields.loc[(process, "yield"), category_key], decimals=0), dtype=np.int64),
-                   np.array(np.round(np.sqrt(yields.loc[(process, "variance"), category_key]), decimals=0), dtype=np.int64),
-                )
+                else:
+                    # add yield and variances of this process in this bin to the data frame
+                    yields.loc[(process, "yield"), category_key] += yields_combine_bin.Get(process).GetPointY(0)
+                    yields.loc[(process, "variance_down"), category_key] += np.power(yields_combine_bin.Get(process).GetErrorYlow(0), 2)
+                    yields.loc[(process, "variance_up"), category_key] += np.power(yields_combine_bin.Get(process).GetErrorYhigh(0), 2)
 
-    #for the total yield, the correlated uncertainty/variance is calculated
-    yields.loc[("total", "variance"), category_key] = get_total_correlated_variance(bin_group_names, total_cov_combine)
-    yields.loc[("total", "string"), category_key] = "${} \\pm {}$".format(
-        np.array(np.round(yields.loc[("total", "yield"), category_key], decimals=0), dtype=np.int64),
-        np.array(np.round(np.sqrt(yields.loc[("total", "variance"), category_key]), decimals=0), dtype=np.int64),
-    )
+            else:
+                # add yield of this process in this bin to the data frame
+                yields.loc[(process, "yield"), category_key] += yields_combine_bin.Get(process).GetBinContent(1)
+
+                # if this is not the total yield, the variances are added up
+                if process != "total":
+                    yields.loc[(process, "variance_down"), category_key] += np.power(yields_combine_bin.Get(process).GetBinError(1), 2)
+                    yields.loc[(process, "variance_up"), category_key] += np.power(yields_combine_bin.Get(process).GetBinError(1), 2)
+
+    # for the total yield, the correlated uncertainty/variance is calculated
+    yields.loc[("total", "variance_down"), category_key] = get_total_correlated_variance(bin_group_names, total_cov_combine)
+    yields.loc[("total", "variance_up"), category_key] = get_total_correlated_variance(bin_group_names, total_cov_combine)
+
+    for process in np.unique(yields.index.get_level_values(0)):
+        yield_val = np.array(np.round(yields.loc[(process, "yield"), category_key], decimals=0), dtype=np.int64)
+        sigma_down_val = np.array(np.round(np.sqrt(yields.loc[(process, "variance_down"), category_key]), decimals=0), dtype=np.int64)
+        sigma_up_val = np.array(np.round(np.sqrt(yields.loc[(process, "variance_up"), category_key]), decimals=0), dtype=np.int64)
+
+        if process == "data" and category_key[1] == "pass" and category_key[2] == "SR":
+            yields.loc[(process, "string"), category_key] = "{\\bfseries{}blind}"
+
+        else:
+            if sigma_down_val == sigma_up_val:
+                yields.loc[(process, "string"), category_key] = "${} \\pm {}$".format(yield_val, sigma_down_val)
+            else:
+                yields.loc[(process, "string"), category_key] = "${{{}}}_{{-{}}}^{{+{}}}$".format(yield_val, sigma_down_val, sigma_up_val)
 
     return yields
 
@@ -150,13 +172,15 @@ def construct_yield_table(yields, era, top_tagger_pass_or_fail, category_labels,
         yield_table.index = pd.Index([process_labels[k] for k in yield_table.index])
         yield_table.columns = pd.Index(category_labels[k] for k in yield_table.columns)
 
-        style = yield_table.style
+        yield_table.style.set_properties(
+            scriptsize="--latex--rwrap",
+        )
 
-        return style.to_latex(
+        return yield_table.style.to_latex(
             caption="{}, top tagger {}".format(era, top_tagger_pass_or_fail),
             column_format="l" + len(yield_table.columns) * "c",
             hrules=True,
-        )
+        ).replace("\\begin{table}", "\\begin{table}\n\\centering\\scriptsize")
 
 
 if __name__ == "__main__":
@@ -215,7 +239,7 @@ if __name__ == "__main__":
                 # produce a latex file with the table
                 yield_table = construct_yield_table(yields, era, top_tagger_pass_or_fail, CATEGORY_LABELS, PROCESS_LABELS)
                 prefix = "\n".join([
-                    r"\documentclass[11pt,a4paper,landscape]{article}",
+                    r"\documentclass[11pt,a4paper]{article}",
                     r"\usepackage[T1]{fontenc}",
                     r"\usepackage[utf8]{inputenc}",
                     r"\usepackage[left=2.0cm, right=2.0cm]{geometry}"
