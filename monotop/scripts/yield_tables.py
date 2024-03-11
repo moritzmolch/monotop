@@ -176,11 +176,28 @@ def construct_yield_table(yields, era, top_tagger_pass_or_fail, category_labels,
             scriptsize="--latex--rwrap",
         )
 
-        return yield_table.style.to_latex(
+        table_string = yield_table.style.to_latex(
             caption="{}, top tagger {}".format(era, top_tagger_pass_or_fail),
             column_format="l" + len(yield_table.columns) * "c",
             hrules=True,
-        ).replace("\\begin{table}", "\\begin{table}\n\\centering\\scriptsize")
+        )
+        
+        # decrease fontsize
+        table_string = table_string.replace("\\begin{table}", "\\begin{table}\n\\centering\\scriptsize")
+
+        # remove booktabs commands
+        table_string = table_string.replace("\\toprule", "\\hline").replace("\\midrule", "\\hline").replace("\\bottomrule", "\\hline")
+
+        # add additional horizontal bars after data and background
+        table_string_rows = table_string.split("\n")
+        index_data = table_string_rows.index([row for row in table_string_rows if row.strip().startswith("data")][0])
+        index_bkg = table_string_rows.index([row for row in table_string_rows if row.strip().startswith("total background")][0])
+        table_string_rows = table_string_rows[0:(index_data + 1)] + ["\\hline"] + table_string_rows[(index_data + 1):(index_bkg + 1)] + ["\\hline"] + table_string_rows[(index_bkg + 1)::]
+
+        # concatenate the whole string again
+        table_string = "\n".join(table_string_rows)
+
+        return table_string
 
 
 if __name__ == "__main__":
@@ -258,8 +275,11 @@ if __name__ == "__main__":
                     r"\end{document}"
                 ])
                 destination = os.path.join(output_dir, "yield_table_{}_{}.tex".format(era, top_tagger_pass_or_fail))
+                destination_raw = os.path.join(output_dir, "yield_table_raw_{}_{}.tex".format(era, top_tagger_pass_or_fail))
                 with open(destination, mode="w") as f:
                     f.write(prefix + yield_table + suffix)
+                with open(destination_raw, mode="w") as f:
+                    f.write(yield_table)
 
                 # compile the PDF
                 p = subprocess.Popen(["/usr/bin/pdflatex", os.path.basename(destination)], cwd=output_dir, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
